@@ -20,9 +20,9 @@ const Signup: React.FC = () => {
   return (
     <AuthLayout title="Join the BLOG Community">
       <Form name="signup_form" onFinish={onFinish} layout="vertical">
-        <AuthInput name="name" label="Name" placeholder="Enter your name" prefixIcon="name" rules={[{ required: true }]} />
-        <AuthInput name="email" label="Email" placeholder="Enter your email" prefixIcon="email" rules={[{ required: true }, { type: 'email' }]} />
-        <AuthInput name="password" label="Password" placeholder="Enter your password" type="password" prefixIcon="password" rules={[{ required: true, min: 6 }]} />
+        <AuthInput name="name" label="Name" placeholder="Enter your name" prefixIcon="name" />
+        <AuthInput name="email" label="Email" placeholder="Enter your email" prefixIcon="email"  />
+        <AuthInput name="password" label="Password" placeholder="Enter your password" type="password" prefixIcon="password"/>
         <AuthCheckbox name="terms" label="I accept the terms and conditions" />
         <AuthButton loading={isLoading} text="Sign Up" />
         <Row justify="center">

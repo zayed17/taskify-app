@@ -21,8 +21,8 @@ const Login: React.FC = () => {
   return (
     <AuthLayout title="Join the BLOG Community">
       <Form name="login_form" onFinish={onFinish} layout="vertical">
-        <AuthInput name="email" label="Email" placeholder="Enter your email" prefixIcon="email" rules={[{ required: true, message: "Please input your Email!" }, { type: "email" }]} />
-        <AuthInput name="password" label="Password" placeholder="Enter your password" type="password" prefixIcon="password" rules={[{ required: true }]} />
+        <AuthInput name="email" label="Email" placeholder="Enter your email" prefixIcon="email"  />
+        <AuthInput name="password" label="Password" placeholder="Enter your password" type="password" prefixIcon="password"  />
         <AuthCheckbox name="remember" label="Remember me" />
         <AuthButton loading={isLoading} text="Log in" />
         <Row justify="center">
