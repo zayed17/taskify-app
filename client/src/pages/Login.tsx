@@ -14,7 +14,7 @@ const Login: React.FC = () => {
       message.success('Login successful');
       navigate('/');
     } catch (err: any) {
-      message.error(err?.data?.message || 'Login failed. Please try again.');
+      message.error(err?.data?.message);
     }
   };
 

@@ -1,33 +1,46 @@
 export const validationRules = {
-    email: [
-      {
-        required: true,
-        message: 'Email is required!',
-      },
-      {
-        type: 'email',
-        message: 'Please enter a valid email address!',
-      },
-    ],
-    password: [
-      {
-        required: true,
-        message: 'Password is required!',
-      },
-      {
-        min: 8,
-        message: 'Password must be at least 8 characters long!',
-      },
-      {
-        pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/,
-        message: 'Password must contain letters and numbers!',
-      },
-    ],
-    required: (field: string) => [
-      {
-        required: true,
-        message: `${field} is required!`,
-      },
-    ],
-  };
-  
+  name: [
+    {
+      required: true,
+      message: 'Name is required!',
+    },
+    {
+      min: 3,
+      message: 'Name must be at least 3 characters long!',
+    },
+    {
+      pattern: /^[A-Za-z\s]+$/,
+      message: 'Name must contain only letters and spaces!',
+    },
+  ],
+  email: [
+    {
+      required: true,
+      message: 'Email is required!',
+    },
+    {
+      type: 'email',
+      message: 'Please enter a valid email address!',
+    },
+  ],
+  password: [
+    {
+      required: true,
+      message: 'Password is required!',
+    },
+    {
+      min: 8,
+      message: 'Password must be at least 8 characters long!',
+    },
+    {
+      pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/,
+      message: 'Password must contain letters and numbers!',
+    },
+  ],
+  required: (field: string) => [
+    {
+      required: true,
+      message: `${field} is required!`,
+    },
+  ],
+};
