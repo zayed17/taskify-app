@@ -21,11 +21,21 @@ const Login: React.FC = () => {
   return (
     <AuthLayout title="Join the BLOG Community">
       <Form name="login_form" onFinish={onFinish} layout="vertical">
-        <AuthInput name="email" label="Email" placeholder="Enter your email" prefixIcon="email"  />
-        <AuthInput name="password" label="Password" placeholder="Enter your password" type="password" prefixIcon="password"  />
-        <AuthCheckbox name="remember" label="Remember me" />
+        <AuthInput name="email" label="Email" placeholder="Enter your email" prefixIcon="email" />
+        <AuthInput name="password" label="Password" placeholder="Enter your password" type="password" prefixIcon="password" />
+        <Row justify="space-between" align="middle" >
+          <Col>
+            <AuthCheckbox name="remember" label="Remember me" />
+          </Col>
+          <Col>
+            <Link to="/forgot-password" className="text-black hover:text-black">
+              Forgot Password?
+            </Link>
+          </Col>
+        </Row>
+
         <AuthButton loading={isLoading} text="Log in" />
-        <Row justify="center">
+        <Row justify="center" className="mt-4">
           <Col>
             <Link to="/signup" className="text-black hover:text-black">
               Don't have an account? Register

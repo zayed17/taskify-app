@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-export const authApi = createApi({
-  reducerPath: 'authApi',
+export const userApi = createApi({
+  reducerPath: 'userApi',
   baseQuery: fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_API_BASE_URL}/api/user/`,
     credentials: 'include',
@@ -21,9 +21,22 @@ export const authApi = createApi({
         body: userData,
       }),
     }),
-    getUser: builder.query({
-      query: () => 'get-user',
+    forgotPassword: builder.mutation({
+      query: (userData) => ({
+        url: 'forgot-password',
+        method: 'POST',
+        body: userData,
+      }),
     }),
+
+    resetPassword: builder.mutation({
+      query: ({ token, newPassword }: { token: string; newPassword: string }) => ({
+        url: `reset-password/${token}`,
+        method: 'POST',
+        body: { newPassword },
+      }),
+    }),
+
     logout: builder.mutation({
       query: () => ({
         url: 'logout',
@@ -33,4 +46,4 @@ export const authApi = createApi({
   }),
 });
 
-export const { useLoginMutation, useSignupMutation ,useGetUserQuery, useLogoutMutation} = authApi;
+export const { useLoginMutation, useSignupMutation , useLogoutMutation,useForgotPasswordMutation,useResetPasswordMutation} = userApi;

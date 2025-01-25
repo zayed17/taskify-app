@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/userModel';
+import sendEmail from '../utils/sendMail';
 
 const JWT_SECRET = process.env.JWT_SECRET
 
@@ -72,5 +73,100 @@ export const login = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error); 
     res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+
+
+
+
+
+/**
+ * @description Handles the forgot password request.
+ * @route       POST /api/user/forgot-password
+ * @access      Public
+ */
+export const forgotPassword = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+       res.status(400).json({ success: false, message: 'Email is required' });
+       return
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+       res.status(404).json({ success: false, message: 'User not found' });
+       return
+    }
+
+    const resetToken = jwt.sign({ userId: user._id }, JWT_SECRET!, { expiresIn: '1h' });
+
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpires = new Date(Date.now() + 3600000);
+    await user.save();
+
+    const resetLink = `${process.env.CORS_ORIGIN}/reset-password/${resetToken}`;
+
+    await sendEmail({
+      to: email,
+      subject: 'Password Reset',
+      text: `Click the link to reset your password: ${resetLink}`,
+    });
+
+    res.status(200).json({ success: true, message: 'Password reset link sent to your email' });
+  } catch (error: any) {
+    console.error('Error in forgotPassword:', error);
+    res.status(500).json({ success: false, message: 'Server error', error: error.message || 'Something went wrong' });
+  }
+};
+
+
+/**
+ * @description Handles the password reset request.
+ * @route       POST /api/user/reset-password/:token
+ * @access      Public
+ */
+export const resetPassword = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.params;
+    const { newPassword } = req.body;
+
+    if (!token) {
+       res.status(400).json({ success: false, message: 'Token is required' });
+       return
+    }
+
+    if (!newPassword) {
+       res.status(400).json({ success: false, message: 'New password is required' });
+       return
+    }
+
+    const decoded: any = jwt.verify(token,JWT_SECRET!);
+    const user = await User.findOne({
+      _id: decoded.userId,
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+       res.status(400).json({ success: false, message: 'Invalid or expired token' });
+       return
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 12); 
+
+    user.password = hashedPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    res.status(200).json({ success: true, message: 'Password reset successfully' });
+  } catch (error: any) {
+    console.error('Error in resetPassword:', error);
+    res.status(500).json({ success: false, message: 'Server error', error: error.message || 'Something went wrong' });
   }
 };
