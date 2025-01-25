@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useDrag } from 'react-dnd';
+import { Popconfirm } from 'antd';
 import { ITask } from '../types/taskType';
 
 interface TaskItemProps {
@@ -21,7 +22,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onDelete }) => {
   drag(ref);
 
   return (
-    <div ref={ref}
+    <div  ref={ref}
       className={`p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 cursor-move border border-gray-200 ${
         isDragging ? 'opacity-50' : ''}`}>
       <div className="flex justify-between items-center">
@@ -29,10 +30,20 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onDelete }) => {
           <h4 className="text-lg font-semibold text-gray-900">{task.title}</h4>
           <p className="text-sm text-gray-600 mt-1">{task.description}</p>
         </div>
-        <button  onClick={() => onDelete(task._id)}
-          className="text-gray-500 hover:text-gray-900 transition-colors duration-300 p-2 rounded-full hover:bg-gray-100" >
-          <DeleteOutlined className="text-lg" />
-        </button>
+        <Popconfirm
+          title="Are you sure you want to delete this task?"
+          description="This action cannot be undone."
+          onConfirm={() => onDelete(task._id)}
+          okText="Delete"
+          okType="danger"
+          cancelText="Cancel"
+        >
+          <button
+            className="text-gray-500 hover:text-gray-900 transition-colors duration-300 p-2 rounded-full hover:bg-gray-100"
+          >
+            <DeleteOutlined className="text-lg" />
+          </button>
+        </Popconfirm>
       </div>
     </div>
   );
