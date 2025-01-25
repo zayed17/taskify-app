@@ -1,6 +1,6 @@
 import { Form, Row, Col, message } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSignupMutation } from '../api/authApi';
+import { useSignupMutation } from '../api';
 import { AuthLayout, AuthInput, AuthCheckbox, AuthButton } from '../components/Auth';
 
 const Signup: React.FC = () => {

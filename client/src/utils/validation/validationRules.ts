@@ -37,6 +37,34 @@ export const validationRules = {
       message: 'Password must contain letters and numbers!',
     },
   ],
+  title: [
+    {
+      required: true,
+      message: 'Title is required!',
+    },
+    {
+      min: 5,
+      message: 'Title must be at least 5 characters long!',
+    },
+    {
+      max: 100,
+      message: 'Title must be less than 100 characters!',
+    },
+  ],
+  description: [
+    {
+      required: true,
+      message: 'Description is required!',
+    },
+    {
+      min: 10,
+      message: 'Description must be at least 10 characters long!',
+    },
+    {
+      max: 500,
+      message: 'Description must be less than 500 characters!',
+    },
+  ],
   required: (field: string) => [
     {
       required: true,

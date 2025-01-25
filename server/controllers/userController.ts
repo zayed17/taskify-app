@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/userModel';
 
 const JWT_SECRET = process.env.JWT_SECRET
-console.log(JWT_SECRET,"chekcing the en")
+
 /**
  * @description Handles user signup by creating a new user in the database.
  * @route       POST /api/user/signup
@@ -62,6 +62,12 @@ export const login = async (req: Request, res: Response) => {
 
     const token = jwt.sign({ userId: user._id }, JWT_SECRET!, { expiresIn: '1h' });
 
+    res.cookie('userToken', token, { httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 3600000, 
+    });
+    
     res.status(200).json({ message: 'Login successful', token });
   } catch (error) {
     console.error(error); 

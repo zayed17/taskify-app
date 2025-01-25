@@ -1,10 +1,11 @@
-import express, { Application, Request, Response, NextFunction } from 'express';
+import express, { Application } from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import connectDB from './config/db';
 import userRoutes from './routes/userRoute';
+import taskRoutes from './routes/taskRotue';
 
 
 const app: Application = express();
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+app.use('/api/task', taskRoutes);
 app.use('/api/user', userRoutes);
 
 const PORT = process.env.PORT;

@@ -1,9 +1,11 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
+
 interface IUser extends Document {
   email: string;
   password: string;
   name: string;
+  tasks: any[];  
 }
 
 const userSchema = new Schema<IUser>({
@@ -20,6 +22,24 @@ const userSchema = new Schema<IUser>({
     type: String,
     required: true,
   },
+  tasks: [
+    {
+      _id: { type: Schema.Types.ObjectId, auto: true }, 
+      title: {
+        type: String,
+        required: true,
+      },
+      description: {
+        type: String,
+        required: true,
+      },
+      status: {
+        type: String,
+        enum: ['Pending', 'Completed', 'Done'],
+        default: 'Pending',
+      },
+    },
+  ]
 }, {
   timestamps: true,
 });
