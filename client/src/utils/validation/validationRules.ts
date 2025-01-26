@@ -1,4 +1,4 @@
-export const validationRules = {
+export const validationRules :any= {
   name: [
     {
       required: true,

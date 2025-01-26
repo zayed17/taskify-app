@@ -13,7 +13,7 @@ interface AuthInputProps {
 
 }
 
-const iconMap = {
+const iconMap :any= {
   email: <MailOutlined className="text-gray-400" />,
   password: <LockOutlined className="text-gray-400" />,
   name: <UserOutlined className="text-gray-400" />,
