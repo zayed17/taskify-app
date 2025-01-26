@@ -61,6 +61,7 @@ export const login = async (req: Request, res: Response) => {
        return
     }
 
+
     const token = jwt.sign({ userId: user._id }, JWT_SECRET!, { expiresIn: '1h' });
 
     res.cookie('userToken', token, { httpOnly: true,
@@ -78,6 +79,47 @@ export const login = async (req: Request, res: Response) => {
 
 
 
+/**
+ * @description Handles Google authentication (login/signup).
+ * @route       POST /api/user/google-auth
+ * @access      Public
+ */
+export const googleAuth = async (req: Request, res: Response) => {
+  const { email, name ,sub} = req.body;
+
+  try {
+
+    let user = await User.findOne({ email });
+
+    if (user) {
+      const token = jwt.sign({ id: user._id }, JWT_SECRET!, { expiresIn: '1h' });
+       res.status(200).json({ token, isNewUser: false });
+       return
+    } else {
+      const newUser = new User({
+        name,
+        email,
+        password:sub
+      });
+
+      await newUser.save();
+
+      const token = jwt.sign({ userId: newUser._id }, JWT_SECRET!, { expiresIn: '1h' });
+
+      res.cookie('userToken', token, { httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 3600000, 
+      });
+
+       res.status(201).json({ token, isNewUser: true });
+       return
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
 
 
 
@@ -170,3 +212,5 @@ export const resetPassword = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: 'Server error', error: error.message || 'Something went wrong' });
   }
 };
+
+

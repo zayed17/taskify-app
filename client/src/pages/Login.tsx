@@ -2,9 +2,13 @@ import { Form, Row, Col, message } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../api';
 import { AuthLayout, AuthInput, AuthCheckbox, AuthButton } from '../components/Auth';
+import { GoogleLogin } from '@react-oauth/google';
+import { useGoogleAuth } from '../hooks/useGoogleAuth';
 
 const Login: React.FC = () => {
   const [login, { isLoading }] = useLoginMutation();
+  const { handleGoogleAuthSuccess, handleGoogleAuthFailure } = useGoogleAuth();
+
   const navigate = useNavigate();
 
   const onFinish = async (values: any) => {
@@ -35,6 +39,14 @@ const Login: React.FC = () => {
         </Row>
 
         <AuthButton loading={isLoading} text="Log in" />
+        <div className="flex justify-center mt-4">
+          <GoogleLogin
+            onSuccess={handleGoogleAuthSuccess}
+            onError={handleGoogleAuthFailure}
+            useOneTap
+          />
+        </div>
+
         <Row justify="center" className="mt-4">
           <Col>
             <Link to="/signup" className="text-black hover:text-black">

@@ -37,6 +37,14 @@ export const userApi = createApi({
       }),
     }),
 
+    googleAuth: builder.mutation({
+      query: (userData) => ({
+        url: 'google-auth',
+        method: 'POST',
+        body: userData,
+      }),
+    }),
+
     logout: builder.mutation({
       query: () => ({
         url: 'logout',
@@ -46,4 +54,4 @@ export const userApi = createApi({
   }),
 });
 
-export const { useLoginMutation, useSignupMutation , useLogoutMutation,useForgotPasswordMutation,useResetPasswordMutation} = userApi;
+export const { useLoginMutation, useSignupMutation , useLogoutMutation,useForgotPasswordMutation,useResetPasswordMutation , useGoogleAuthMutation} = userApi;
