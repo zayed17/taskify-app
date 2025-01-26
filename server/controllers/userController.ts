@@ -214,3 +214,113 @@ export const resetPassword = async (req: Request, res: Response) => {
 };
 
 
+
+/**
+ * @description Handles feed creation for a user.
+ * @route       POST /api/user/create-feed
+ * @access      Private (only authenticated users can create feed)
+ */
+
+export const createFeed = async (req: any, res: Response) => {
+  try {
+    const { caption, imageUrl } = req.body;
+    const userId = req.userId; 
+
+    if (!caption || !imageUrl) {
+       res.status(400).json({ error: 'Caption and image URL are required' });
+       return 
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+       res.status(404).json({ error: 'User not found' });
+       return 
+    }
+
+    user.feeds.push({ imageUrl, caption });
+    await user.save();
+
+    res.status(201).json({ message: 'Feed created successfully'});
+  } catch (error) {
+    console.error('Error creating feed:', error);
+    res.status(500).json({ error: 'Failed to create feed' });
+  }
+};
+
+
+
+/**
+ * @description Lists all feeds for the authenticated user.
+ * @route       GET /api/user/list-feed
+ * @access      Private (only authenticated users can access their feeds)
+ */
+export const listFeed = async (req: any, res: Response) => {
+  try {
+    const userId = req.userId; 
+    if (!userId) {
+       res.status(400).json({ success: false, message: 'User ID is required' });
+       return
+    }
+
+    const user = await User.findById(userId).select('feeds');
+
+    if (!user) {
+       res.status(404).json({ success: false, message: 'User not found' });
+       return
+    }
+
+    res.status(200).json({ success: true, feeds: user.feeds });
+  } catch (error) {
+    console.error('Error listing feeds:', error);
+    res.status(500).json({ success: false, message: 'Failed to retrieve feeds' });
+  }
+};
+
+
+/**
+ * @description Deletes a feed for the authenticated user.
+ * @route       DELETE /api/user/delete-feed/:feedId
+ * @access      Private (only authenticated users can delete their feeds)
+ */
+export const deleteFeed = async (req: any, res: Response) => {
+  try {
+    const userId = req.userId; 
+    const feedId = req.params.feedId;
+
+    console.log("checking aoerfsdfdsf")
+
+    if (!userId) {
+       res.status(400).json({ success: false, message: 'User ID is required' });
+       return
+    }
+
+    if (!feedId) {
+       res.status(400).json({ success: false, message: 'Feed ID is required' });
+       return
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+       res.status(404).json({ success: false, message: 'User not found' });
+       return
+    }
+
+    const feedIndex = user.feeds.findIndex((feed) => feed._id.equals(feedId));
+
+    if (feedIndex === -1) {
+       res.status(404).json({ success: false, message: 'Feed not found' });
+       return
+    }
+
+    user.feeds.splice(feedIndex, 1);
+
+    await user.save();
+
+    res.status(200).json({ success: true, message: 'feed deleted successfully' });
+  } catch (error: any) {
+    console.error('Error deleting feed:', error);
+    res.status(500).json({ success: false, message: 'Server error', error: error.message || 'Something went wrong' });
+  }
+};
+

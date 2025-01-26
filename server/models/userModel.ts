@@ -5,8 +5,9 @@ interface IUser extends Document {
   password: string;
   name: string;
   tasks: any[];
-  resetPasswordToken?: string; 
-  resetPasswordExpires?: Date; 
+  feeds: any[];
+  resetPasswordToken?: string;
+  resetPasswordExpires?: Date;
 }
 
 const userSchema = new Schema<IUser>(
@@ -42,6 +43,23 @@ const userSchema = new Schema<IUser>(
         },
       },
     ],
+    feeds: [
+      {
+        _id: { type: Schema.Types.ObjectId, auto: true },
+        imageUrl: {
+          type: String,
+          required: true,
+        },
+        caption: {
+          type: String,
+          required: true,
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
     resetPasswordToken: {
       type: String,
       default: null,
@@ -52,7 +70,7 @@ const userSchema = new Schema<IUser>(
     },
   },
   {
-    timestamps: true,
+    timestamps: true, 
   }
 );
 

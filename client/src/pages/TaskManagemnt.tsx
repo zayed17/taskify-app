@@ -8,6 +8,7 @@ import { ITask } from '../types/taskType';
 import { useTasks } from '../hooks/useTask';
 import { showSuccessNotification, showErrorNotification } from '../utils/notifications';
 import Loader from '../components/Loader';
+import Navbar from '../components/Navbar';
 
 
 const TaskManagement: React.FC = () => {
@@ -43,6 +44,7 @@ const TaskManagement: React.FC = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
+      <Navbar />
       <div className="container mx-auto p-8">
         <h1 className="text-4xl font-bold text-center mb-8 text-gray-900">Task Management</h1>
         <div className="mb-8">
