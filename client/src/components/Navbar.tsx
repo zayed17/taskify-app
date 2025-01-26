@@ -21,12 +21,14 @@ const Navbar: React.FC = () => {
             Task Management
           </Link>
         </div>
-        <button 
-          onClick={handleLogout} 
-          className="text-white bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition-colors"
-        >
-          Logout
-        </button>
+        <div className="ml-auto">
+          <button 
+            onClick={handleLogout} 
+            className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 transition-colors"
+          >
+            Logout
+          </button>
+        </div>
       </div>
     </nav>
   );
