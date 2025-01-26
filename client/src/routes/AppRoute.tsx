@@ -6,29 +6,20 @@ import Task from '../pages/TaskManagemnt'
 import ForgotPassword from '../pages/ForgotPassword';
 import ResetPassword from '../pages/ResetPassword';
 import FeedManagement from '../pages/FeedManagement';
-// import HomePage from '../pages/HomePage';
-// import AddBlogPage from '../pages/AddBlogPage';
-// import BlogListPage from '../pages/BlogListPage';
-// import EditBlogPage from '../pages/EditBlogPage';
-// import ProtectedRoute from './Protected';
-// import PublicRoute from './Public';
+import ProtectedRoute from './ProtectedRoute';
+import PublicRoute from './PublicRoute';
 
 
 const AppRouter: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Task />} />
-        <Route path="/login" element={<LoginPage />}  />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
-        <Route path="/feed" element={<FeedManagement />} />
-
-        {/* <Route path="/" element={<ProtectedRoute redirectTo='/login' element={HomePage} />} />
-        <Route path="/add-blog" element={<ProtectedRoute redirectTo='/login' element={AddBlogPage} />} />
-        <Route path="/my-blog" element={<ProtectedRoute redirectTo='/login' element={BlogListPage} />} />
-        <Route path="/edit-blog/:id" element={<ProtectedRoute redirectTo='/login' element={EditBlogPage} />} /> */}
+        <Route path="/" element={<ProtectedRoute redirectTo='/login' element={Task} />} />
+        <Route path="/login" element={<PublicRoute redirectTo='/' element={LoginPage} />} />
+        <Route path="/signup" element={<PublicRoute redirectTo='/' element={SignupPage} />} />
+        <Route path="/forgot-password" element={<ProtectedRoute redirectTo='/login' element={ForgotPassword} />} />
+        <Route path="/reset-password/:token" element={<ProtectedRoute redirectTo='/login' element={ResetPassword} />} />
+        <Route path="/feed" element={<ProtectedRoute redirectTo='/login' element={FeedManagement} />} />
       </Routes>
     </Router>
   );
